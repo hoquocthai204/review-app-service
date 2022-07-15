@@ -10,7 +10,7 @@ import net.sparkminds.review.entity.enumeration.EmploymentMode;
 
 @Data
 @Builder
-public class ChildProjectRequestDto {
+public class SubProjectRequestDto {
 
     @NotBlank(message = "Project name is required")
     private String name;

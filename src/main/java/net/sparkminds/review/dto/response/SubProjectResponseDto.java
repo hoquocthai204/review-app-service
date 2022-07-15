@@ -7,7 +7,7 @@ import net.sparkminds.review.entity.enumeration.EmploymentMode;
 
 @Data
 @Builder
-public class ProjectResponseDto {
+public class SubProjectResponseDto {
 
     private String name;
 
@@ -25,6 +25,4 @@ public class ProjectResponseDto {
 
     private String linkRepo;
     private String linkLive;
-
-    private Long profileId;
 }

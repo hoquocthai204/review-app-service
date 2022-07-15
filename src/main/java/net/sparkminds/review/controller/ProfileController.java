@@ -24,6 +24,7 @@ import com.lowagie.text.DocumentException;
 
 import lombok.RequiredArgsConstructor;
 import net.sparkminds.review.dto.request.ProfileRequestDto;
+import net.sparkminds.review.dto.response.ProfileResponseDto;
 import net.sparkminds.review.entity.Profile;
 import net.sparkminds.review.export.ProfilePDFExporter;
 import net.sparkminds.review.service.ProfileService;
@@ -58,7 +59,7 @@ public class ProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<Profile> addNewProfile(@Valid @RequestBody ProfileRequestDto dto) {
+    public ResponseEntity<ProfileResponseDto> addNewProfile(@Valid @RequestBody ProfileRequestDto dto) {
         return ResponseEntity.ok(profileService.addNewProfile(dto));
     }
 

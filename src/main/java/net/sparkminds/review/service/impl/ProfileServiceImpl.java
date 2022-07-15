@@ -1,23 +1,18 @@
 package net.sparkminds.review.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import net.sparkminds.review.dto.request.ProfileRequestDto;
+import net.sparkminds.review.dto.response.ProfileResponseDto;
 import net.sparkminds.review.entity.Profile;
-import net.sparkminds.review.entity.Project;
 import net.sparkminds.review.exception.ProfileNotFoundException;
 import net.sparkminds.review.repository.ProfileRepository;
 import net.sparkminds.review.service.ProfileService;
-import net.sparkminds.review.service.mapper.ProjectMapper;
+import net.sparkminds.review.service.mapper.ProfileMapper;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +20,7 @@ import net.sparkminds.review.service.mapper.ProjectMapper;
 public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
-    private final ProjectMapper projectMapper;
+    private final ProfileMapper profileMapper;
 
     @Override
     public List<Profile> getAllProfile() {
@@ -34,41 +29,34 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional
-    public Profile addNewProfile(ProfileRequestDto dto) {
+    public ProfileResponseDto addNewProfile(ProfileRequestDto dto) {
         if (profileRepository.existsByEmailAddress(dto.getEmailAddress())) {
             profileRepository.deleteByEmailAddress(dto.getEmailAddress());
         }
-//        return profileRepository.save(Profile.builder().emailAddress(dto.getEmailAddress()).name(dto.getName())
-//                .githubUser(dto.getGithubUser()).build());
         return saveProfile(dto);
     }
 
     @Override
     @Transactional
-    public void updateProfile(Long id, ProfileRequestDto profileRequestDto) {
+    public void updateProfile(Long id, ProfileRequestDto dto) {
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new ProfileNotFoundException("Profile is not found"));
-        if (!profileRepository.existsByEmailAddress(profileRequestDto.getEmailAddress())) {
-            profileRepository.deleteByEmailAddress(profileRequestDto.getEmailAddress());
-            saveProfile(profileRequestDto);
+        if (!profileRepository.existsByEmailAddress(dto.getEmailAddress())) {
+            profileRepository.deleteByEmailAddress(dto.getEmailAddress());
+            saveProfile(dto);
             return;
         }
-        profile.setName(profileRequestDto.getName());
-        profile.setGithubUser(profileRequestDto.getGithubUser());
-        profile.setEmailAddress(profileRequestDto.getEmailAddress());
+        profile.setName(dto.getName());
+        profile.setGithubUser(dto.getGithubUser());
+        profile.setEmailAddress(dto.getEmailAddress());
     }
 
-    public Profile saveProfile(ProfileRequestDto dto) {
-        List<Project> list = dto.getPastProjects().stream().map(projectMapper::toEntity).collect(Collectors.toList());
-        System.out.println(list);
-        return profileRepository
-                .save(Profile
-                .builder()
-                .emailAddress(dto.getEmailAddress())
-                .name(dto.getName())
-                .githubUser(dto.getGithubUser())
-                .pastProjects(list)
-                .build());
+    public ProfileResponseDto saveProfile(ProfileRequestDto dto) {
+        Profile profile = profileRepository
+                .save(profileMapper.convertToEntity(dto));
+        Profile profileMod = profileRepository.findById(profile.getId()).get();
+        profileMod.getPastProjects().forEach(project->project.setProfile(profileMod));
+        return profileMapper.convertToResponseDto(profile);
     }
 
     @Override

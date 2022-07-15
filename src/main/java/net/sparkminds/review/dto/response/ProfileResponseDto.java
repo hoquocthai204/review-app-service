@@ -15,5 +15,5 @@ public class ProfileResponseDto {
 
     private String githubUser;
 
-    private List<ProjectResponseDto> pastProjects;
+    private List<SubProjectResponseDto> pastProjects;
 }

@@ -24,5 +24,5 @@ public class ProfileRequestDto {
     @Valid
     @NotEmpty(message = "Past projects is required")
 //    @NotBlank(message = "Past projects is required")
-    private List<ChildProjectRequestDto> pastProjects;
+    private List<SubProjectRequestDto> pastProjects;
 }

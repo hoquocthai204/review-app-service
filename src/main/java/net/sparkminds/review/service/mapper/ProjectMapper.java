@@ -2,13 +2,15 @@ package net.sparkminds.review.service.mapper;
 
 import org.springframework.stereotype.Service;
 
-import net.sparkminds.review.dto.request.ChildProjectRequestDto;
+import net.sparkminds.review.dto.request.SubProjectRequestDto;
+import net.sparkminds.review.dto.response.ProjectResponseDto;
+import net.sparkminds.review.dto.response.SubProjectResponseDto;
 import net.sparkminds.review.entity.Project;
 
 @Service
 public class ProjectMapper {
-    public ChildProjectRequestDto toChildProjectDto(Project project) {
-        return ChildProjectRequestDto
+    public SubProjectRequestDto convertToChildRequestDto(Project project) {
+        return SubProjectRequestDto
                 .builder()
                 .name(project.getName())
                 .employmentMode(project.getEmploymentMode())
@@ -22,7 +24,7 @@ public class ProjectMapper {
                 .build();
     }
 
-    public Project toEntity(ChildProjectRequestDto dto) {
+    public Project convertToEntity(SubProjectRequestDto dto) {
         if (dto == null) return null;
         return Project
                 .builder()
@@ -35,6 +37,37 @@ public class ProjectMapper {
                 .teamSize(dto.getTeamSize())
                 .linkLive(dto.getLinkRepo())
                 .linkLive(dto.getLinkLive())
+                .build();
+    }
+
+    public ProjectResponseDto convertToResponseDto(Project project) {
+        return ProjectResponseDto
+                .builder()
+                .name(project.getName())
+                .employmentMode(project.getEmploymentMode())
+                .capacity(project.getCapacity())
+                .durationInMonths(project.getDurationInMonths())
+                .startYear(project.getStartYear())
+                .role(project.getRole())
+                .teamSize(project.getTeamSize())
+                .linkLive(project.getLinkRepo())
+                .linkLive(project.getLinkLive())
+                .profileId(project.getProfile().getId())
+                .build();
+    }
+
+    public SubProjectResponseDto convertToSubResponseDto(Project project) {
+        return SubProjectResponseDto
+                .builder()
+                .name(project.getName())
+                .employmentMode(project.getEmploymentMode())
+                .capacity(project.getCapacity())
+                .durationInMonths(project.getDurationInMonths())
+                .startYear(project.getStartYear())
+                .role(project.getRole())
+                .teamSize(project.getTeamSize())
+                .linkLive(project.getLinkRepo())
+                .linkLive(project.getLinkLive())
                 .build();
     }
 }

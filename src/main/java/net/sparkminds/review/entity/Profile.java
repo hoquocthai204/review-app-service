@@ -1,6 +1,5 @@
 package net.sparkminds.review.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,13 +18,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
 @Table(name = "t_profile")
 @EqualsAndHashCode(callSuper = false)
-@SuperBuilder
 @NoArgsConstructor
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Profile extends AbstractAuditingEntity {
@@ -48,15 +45,4 @@ public class Profile extends AbstractAuditingEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> pastProjects;
-
-    public void addProject(Project project) {
-        if (pastProjects == null)
-            pastProjects = new ArrayList<>();
-        pastProjects.add(project);
-        project.setProfile(this);
-    }
-
-    public void addProjects(List<Project> projects) {
-        projects.forEach(this::addProject);
-    }
 }
