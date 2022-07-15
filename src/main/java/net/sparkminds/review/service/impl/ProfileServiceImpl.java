@@ -3,6 +3,7 @@ package net.sparkminds.review.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import net.sparkminds.review.service.ProfileService;
 @Transactional(readOnly = true)
 public class ProfileServiceImpl implements ProfileService {
 
+    @Autowired
     private final ProfileRepository profileRepository;
 
     @Override
@@ -27,11 +29,12 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional
-    public Profile addNewProfile(ProfileRequestDto profileRequestDto) {
-        if (profileRepository.existsByEmailAddress(profileRequestDto.getEmailAddress())) {
-            profileRepository.deleteByEmailAddress(profileRequestDto.getEmailAddress());
+    public Profile addNewProfile(ProfileRequestDto dto) {
+        if (profileRepository.existsByEmailAddress(dto.getEmailAddress())) {
+            profileRepository.deleteByEmailAddress(dto.getEmailAddress());
         }
-        return saveProfile(profileRequestDto);
+        return profileRepository.save(Profile.builder().emailAddress(dto.getEmailAddress()).name(dto.getName())
+                .githubUser(dto.getGithubUser()).build());
     }
 
     @Override

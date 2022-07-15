@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import net.sparkminds.review.entity.enumeration.Capacity;
 import net.sparkminds.review.entity.enumeration.EmploymentMode;
@@ -23,7 +24,10 @@ import net.sparkminds.review.entity.enumeration.EmploymentMode;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class Project extends AbstractAuditingEntity {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +43,8 @@ public class Project extends AbstractAuditingEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "capacity", nullable = false)
     private Capacity capacity;
-    
-    @Column(name="duration_in_months")
+
+    @Column(name = "duration_in_months")
     private String durationInMonths;
 
     @Column(name = "start_year", nullable = false)
