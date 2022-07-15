@@ -10,7 +10,7 @@ import net.sparkminds.review.entity.enumeration.EmploymentMode;
 
 @Data
 @Builder
-public class ProjectRequestDto {
+public class ChildProjectRequestDto {
 
     @NotBlank(message = "Project name is required")
     private String name;
@@ -35,7 +35,4 @@ public class ProjectRequestDto {
 
     private String linkRepo;
     private String linkLive;
-
-    @NotNull(message = "Profile id is required")
-    private Long profileId;
 }

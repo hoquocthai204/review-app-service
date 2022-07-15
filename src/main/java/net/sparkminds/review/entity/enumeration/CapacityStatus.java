@@ -1,5 +1,5 @@
 package net.sparkminds.review.entity.enumeration;
 
-public enum Capacity {
+public enum CapacityStatus {
     PART_TIME, FULL_TIME
 }

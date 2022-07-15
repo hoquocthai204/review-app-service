@@ -2,6 +2,7 @@ package net.sparkminds.review.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +20,8 @@ import net.sparkminds.review.service.ProjectService;
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
-
     private final ProjectRepository projectRepository;
+    
     private final ProfileRepository profileRepository;
 
     @Override

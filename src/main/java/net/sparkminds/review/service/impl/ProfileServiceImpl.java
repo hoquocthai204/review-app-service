@@ -1,7 +1,10 @@
 package net.sparkminds.review.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,17 +13,19 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import net.sparkminds.review.dto.request.ProfileRequestDto;
 import net.sparkminds.review.entity.Profile;
+import net.sparkminds.review.entity.Project;
 import net.sparkminds.review.exception.ProfileNotFoundException;
 import net.sparkminds.review.repository.ProfileRepository;
 import net.sparkminds.review.service.ProfileService;
+import net.sparkminds.review.service.mapper.ProjectMapper;
 
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class ProfileServiceImpl implements ProfileService {
 
-    @Autowired
     private final ProfileRepository profileRepository;
+    private final ProjectMapper projectMapper;
 
     @Override
     public List<Profile> getAllProfile() {
@@ -33,8 +38,9 @@ public class ProfileServiceImpl implements ProfileService {
         if (profileRepository.existsByEmailAddress(dto.getEmailAddress())) {
             profileRepository.deleteByEmailAddress(dto.getEmailAddress());
         }
-        return profileRepository.save(Profile.builder().emailAddress(dto.getEmailAddress()).name(dto.getName())
-                .githubUser(dto.getGithubUser()).build());
+//        return profileRepository.save(Profile.builder().emailAddress(dto.getEmailAddress()).name(dto.getName())
+//                .githubUser(dto.getGithubUser()).build());
+        return saveProfile(dto);
     }
 
     @Override
@@ -52,9 +58,17 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setEmailAddress(profileRequestDto.getEmailAddress());
     }
 
-    public Profile saveProfile(ProfileRequestDto profileRequestDto) {
-        return profileRepository.save(Profile.builder().emailAddress(profileRequestDto.getEmailAddress())
-                .name(profileRequestDto.getName()).githubUser(profileRequestDto.getGithubUser()).build());
+    public Profile saveProfile(ProfileRequestDto dto) {
+        List<Project> list = dto.getPastProjects().stream().map(projectMapper::toEntity).collect(Collectors.toList());
+        System.out.println(list);
+        return profileRepository
+                .save(Profile
+                .builder()
+                .emailAddress(dto.getEmailAddress())
+                .name(dto.getName())
+                .githubUser(dto.getGithubUser())
+                .pastProjects(list)
+                .build());
     }
 
     @Override

@@ -12,19 +12,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import net.sparkminds.review.entity.enumeration.Capacity;
+import net.sparkminds.review.entity.enumeration.CapacityStatus;
 import net.sparkminds.review.entity.enumeration.EmploymentMode;
 
 @Entity
-@Table(name = "project")
+@Table(name = "t_project")
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
+
 public class Project extends AbstractAuditingEntity {
 
     private static final long serialVersionUID = 1L;
@@ -42,7 +47,7 @@ public class Project extends AbstractAuditingEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "capacity", nullable = false)
-    private Capacity capacity;
+    private CapacityStatus capacity;
 
     @Column(name = "duration_in_months")
     private String durationInMonths;
@@ -54,7 +59,7 @@ public class Project extends AbstractAuditingEntity {
     private String role;
 
     @Column(name = "team_size", nullable = false)
-    private Number teamSize;
+    private Integer teamSize;
 
     @Column(name = "link_repo")
     private String linkRepo;

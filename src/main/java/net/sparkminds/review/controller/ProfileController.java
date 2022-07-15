@@ -32,7 +32,6 @@ import net.sparkminds.review.service.ProfileService;
 @RequestMapping("/api/profiles")
 @Validated
 @RequiredArgsConstructor
-
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -59,14 +58,14 @@ public class ProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<Profile> addNewProfile(@Valid @RequestBody ProfileRequestDto addProfileRequestDto) {
-        return ResponseEntity.ok(profileService.addNewProfile(addProfileRequestDto));
+    public ResponseEntity<Profile> addNewProfile(@Valid @RequestBody ProfileRequestDto dto) {
+        return ResponseEntity.ok(profileService.addNewProfile(dto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProfile(@PathVariable Long id,
-            @Valid @RequestBody ProfileRequestDto profileRequestDto) {
-        profileService.updateProfile(id, profileRequestDto);
+            @Valid @RequestBody ProfileRequestDto dto) {
+        profileService.updateProfile(id, dto);
         return ResponseEntity.noContent().build();
     }
 

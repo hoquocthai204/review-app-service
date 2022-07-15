@@ -1,7 +1,9 @@
 package net.sparkminds.review.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,10 +23,11 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
-@Table(name = "profile")
+@Table(name = "t_profile")
 @EqualsAndHashCode(callSuper = false)
 @SuperBuilder
 @NoArgsConstructor
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Profile extends AbstractAuditingEntity {
 
     private static final long serialVersionUID = 1L;
@@ -42,6 +46,17 @@ public class Profile extends AbstractAuditingEntity {
     private String githubUser;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-    private List<Project> projects;
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Project> pastProjects;
+
+    public void addProject(Project project) {
+        if (pastProjects == null)
+            pastProjects = new ArrayList<>();
+        pastProjects.add(project);
+        project.setProfile(this);
+    }
+
+    public void addProjects(List<Project> projects) {
+        projects.forEach(this::addProject);
+    }
 }

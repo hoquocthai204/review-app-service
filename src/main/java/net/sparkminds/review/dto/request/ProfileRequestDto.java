@@ -1,6 +1,10 @@
 package net.sparkminds.review.dto.request;
 
+import java.util.List;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Builder;
 import lombok.Data;
@@ -16,4 +20,9 @@ public class ProfileRequestDto {
 
     @NotBlank(message = "Github user is required")
     private String githubUser;
+
+    @Valid
+    @NotEmpty(message = "Past projects is required")
+//    @NotBlank(message = "Past projects is required")
+    private List<ChildProjectRequestDto> pastProjects;
 }

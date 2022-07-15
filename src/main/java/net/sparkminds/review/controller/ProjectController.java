@@ -2,6 +2,8 @@ package net.sparkminds.review.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,10 +21,11 @@ import net.sparkminds.review.entity.Project;
 import net.sparkminds.review.service.ProjectService;
 
 @RestController
+@RequestMapping("/api/projects")
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/api/projects")
 public class ProjectController {
+    
     private final ProjectService projectService;
 
     @GetMapping
@@ -31,13 +34,13 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addNewProject(@RequestBody ProjectRequestDto dto) {
+    public ResponseEntity<?> addNewProject(@Valid @RequestBody ProjectRequestDto dto) {
         projectService.addNewProject(dto);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProject(@PathVariable Long id, @RequestBody ProjectRequestDto dto) {
+    public ResponseEntity<?> updateProject(@PathVariable Long id, @Valid @RequestBody ProjectRequestDto dto) {
         projectService.updateProject(id, dto);
         return ResponseEntity.noContent().build();
     }
