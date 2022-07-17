@@ -18,4 +18,6 @@ public interface ProfileService {
 
     Object exportProfile();
 
+    Profile findProfile(Long id);
+
 }

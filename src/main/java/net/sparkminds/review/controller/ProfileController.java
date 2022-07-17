@@ -3,6 +3,7 @@ package net.sparkminds.review.controller;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -26,8 +27,10 @@ import lombok.RequiredArgsConstructor;
 import net.sparkminds.review.dto.request.ProfileRequestDto;
 import net.sparkminds.review.dto.response.ProfileResponseDto;
 import net.sparkminds.review.entity.Profile;
+import net.sparkminds.review.entity.Project;
 import net.sparkminds.review.export.ProfilePDFExporter;
 import net.sparkminds.review.service.ProfileService;
+import net.sparkminds.review.service.ProjectService;
 
 @RestController
 @RequestMapping("/api/profiles")
@@ -36,6 +39,7 @@ import net.sparkminds.review.service.ProfileService;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final ProjectService projectService;
 
     @GetMapping
     public ResponseEntity<List<Profile>> getAllProfile() {
@@ -47,14 +51,33 @@ public class ProfileController {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-         
+
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
+        String headerValue = "attachment; filename=profiles_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
-         
-        List<Profile> listUsers = profileService.getAllProfile();
-         
-        ProfilePDFExporter exporter = new ProfilePDFExporter(listUsers);
+
+        List<Profile> listProfile = profileService.getAllProfile();
+        List<Project> listProject = projectService.getAllProject();
+
+        ProfilePDFExporter exporter = new ProfilePDFExporter(listProfile, listProject);
+        exporter.export(response);
+    }
+
+    @GetMapping("/export/pdf/{id}")
+    public void exportOneToPDF(@PathVariable Long id, HttpServletResponse response)
+            throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=profile_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        Profile profile = profileService.findProfile(id);
+        List<Project> listProject = projectService.getAllProject();
+
+        ProfilePDFExporter exporter = new ProfilePDFExporter(Collections.singletonList(profile), listProject);
         exporter.export(response);
     }
 
@@ -64,8 +87,7 @@ public class ProfileController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProfile(@PathVariable Long id,
-            @Valid @RequestBody ProfileRequestDto dto) {
+    public ResponseEntity<?> updateProfile(@PathVariable Long id, @Valid @RequestBody ProfileRequestDto dto) {
         profileService.updateProfile(id, dto);
         return ResponseEntity.noContent().build();
     }

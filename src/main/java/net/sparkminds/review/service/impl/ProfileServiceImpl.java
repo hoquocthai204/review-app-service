@@ -70,4 +70,9 @@ public class ProfileServiceImpl implements ProfileService {
         return null;
     }
 
+    @Override
+    public Profile findProfile(Long id) {
+        return profileRepository.findById(id).get();
+    }
+
 }
