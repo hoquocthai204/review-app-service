@@ -28,7 +28,6 @@ public class LoginController {
     public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto dto) throws Exception {
         return ResponseEntity.ok(loginService.login(dto));
     }
-    
     @GetMapping
     public ResponseEntity<?> logout(HttpServletRequest request){
         loginService.logout(request);
