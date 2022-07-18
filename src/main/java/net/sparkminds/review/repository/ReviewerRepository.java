@@ -11,5 +11,4 @@ import net.sparkminds.review.entity.Reviewer;
 public interface ReviewerRepository extends JpaRepository<Reviewer, Long> {
 
     Optional<Reviewer> findByEmail(String email);
-//    Optional<Reviewer> findByNameAndEmailAndPassword(String name, String email, String password);
 }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import net.sparkminds.review.service.LoginService;
+import net.sparkminds.review.service.impl.UserDetailsServiceImpl;
 
 /*
 The JwtRequestFilter extends the Spring Web Filter OncePerRequestFilter class. For any incoming request this Filter
@@ -28,7 +28,7 @@ class gets executed. It checks if the request has a valid JWT token. If it has a
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private LoginService LoginService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -59,7 +59,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = LoginService.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
 
             // if token is valid configure Spring Security to manually set
             // authentication
