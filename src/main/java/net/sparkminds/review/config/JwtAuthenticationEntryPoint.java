@@ -10,8 +10,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import lombok.RequiredArgsConstructor;
-
 /**
  * This class will extend Spring's AuthenticationEntryPoint class and override its method commence.
  * It rejects every unauthenticated request and send error code 401

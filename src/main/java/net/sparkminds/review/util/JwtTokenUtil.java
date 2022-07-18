@@ -1,4 +1,4 @@
-package net.sparkminds.review.config;
+package net.sparkminds.review.util;
 
 import java.io.Serializable;
 import java.util.Date;

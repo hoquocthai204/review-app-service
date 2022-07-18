@@ -6,10 +6,12 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
+import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
@@ -38,6 +40,9 @@ public class ProfilePDFExporter {
         font.setColor(Color.WHITE);
 
         cell.setPhrase(new Phrase("ID", font));
+        table.addCell(cell);
+
+        cell.setPhrase(new Phrase("Image", font));
         table.addCell(cell);
 
         cell.setPhrase(new Phrase("Name", font));
@@ -79,11 +84,14 @@ public class ProfilePDFExporter {
         table.addCell(cell);
     }
 
-    private void writeTableData(PdfPTable table) {
+    private void writeTableData(PdfPTable table) throws BadElementException, IOException {
         for (Profile profile : listProfile) {
             for (Project project : listProject) {
                 if (profile.getId() == project.getProfile().getId()) {
+                    String imgLink = "https://avatars.githubusercontent.com/" + profile.getGithubUser();
+                    Image img = Image.getInstance(imgLink);
                     table.addCell(profile.getId().toString());
+                    table.addCell(img);
                     table.addCell(profile.getName());
                     table.addCell(profile.getEmailAddress());
                     table.addCell(profile.getGithubUser().toString());
@@ -116,9 +124,9 @@ public class ProfilePDFExporter {
 
         document.add(p);
 
-        PdfPTable table = new PdfPTable(13);
+        PdfPTable table = new PdfPTable(14);
         table.setWidthPercentage(100f);
-        table.setWidths(new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f });
+        table.setWidths(new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f });
         table.setSpacingBefore(10);
 
         writeTableHeader(table);

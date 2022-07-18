@@ -17,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import net.sparkminds.review.service.impl.UserDetailsServiceImpl;
+import net.sparkminds.review.util.JwtTokenUtil;
 
 /*
 The JwtRequestFilter extends the Spring Web Filter OncePerRequestFilter class. For any incoming request this Filter
