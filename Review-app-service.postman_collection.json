@@ -1,0 +1,327 @@
+{
+	"info": {
+		"_postman_id": "d66c3011-c180-479b-b082-1296c8cb93ca",
+		"name": "Review-app-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13964701"
+	},
+	"item": [
+		{
+			"name": "get all profiles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob3F1b2N0aGFpMjA0QGdtYWlsLmNvbSIsImV4cCI6MTY1ODE5NDUxNSwiaWF0IjoxNjU4MTY1NzE1fQ.PoL96JMGoYAj74_nnxjziejLZYYkXvyIscqq5LWkbtOzw81CuCzVHhCMspUhl-kR4Ao0OfTqzbn514QHxvWn2A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob3F1b2N0aGFpMjA0QGdtYWlsLmNvbSIsImV4cCI6MTY1ODE0Mzc5MiwiaWF0IjoxNjU4MTE0OTkyfQ.ZBd2MZQ7gHBmMm4Nb6GspUY0572KojInzFa75qVMFxZ-ANyqZjIwbjpGlqNCQhbuTKx3u7069ELeXlFeGBYs_A",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/profiles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"profiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add new profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob3F1b2N0aGFpMjA0QGdtYWlsLmNvbSIsImV4cCI6MTY1ODI3NzE3NSwiaWF0IjoxNjU4MjQ4Mzc1fQ.V4dw9UDQiMCQjo_mP5KoXK6rlzUMnGhF1cgtku8KQHKCkGKlJgt0bYY2hO4nDtSUJNM8uBM4BwjU9RzMKcZCTg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"emailAddress\":\"hoquocthai204@gmail.com\",\r\n    \"name\":\"ho quoc thai\",\r\n    \"githubUser\":\"hoquocthai204\",\r\n    \"pastProjects\":[\r\n        {\r\n            \"name\":\"springboot\",\r\n            \"employmentMode\":\"EMPLOYED\",\r\n            \"capacity\":\"FULL_TIME\",\r\n            \"durationInMonths\":\"3\",\r\n            \"startYear\":\"2022\",\r\n            \"role\":\"java\",\r\n            \"teamSize\":4\r\n        },\r\n        {\r\n            \"name\":\"springboot1\",\r\n            \"employmentMode\":\"EMPLOYED\",\r\n            \"capacity\":\"FULL_TIME\",\r\n            \"durationInMonths\":\"3\",\r\n            \"startYear\":\"2022\",\r\n            \"role\":\"java\",\r\n            \"teamSize\":4\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/profiles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"profiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "export pdf profiles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob3F1b2N0aGFpMjA0QGdtYWlsLmNvbSIsImV4cCI6MTY1ODE0NTEwOSwiaWF0IjoxNjU4MTE2MzA5fQ.2ul0QPUGIq_MwBJYYm06qKu9s7R5GQ4KzUlF7QRD1FK-lmaYp1FiEg5Dl8XgLND1jf6vKDYTYDMP3t9ojy7rBg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/profiles/export/pdf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"profiles",
+						"export",
+						"pdf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all projects",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob3F1b2N0aGFpMjA0QGdtYWlsLmNvbSIsImV4cCI6MTY1ODI3NzE3NSwiaWF0IjoxNjU4MjQ4Mzc1fQ.V4dw9UDQiMCQjo_mP5KoXK6rlzUMnGhF1cgtku8KQHKCkGKlJgt0bYY2hO4nDtSUJNM8uBM4BwjU9RzMKcZCTg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/projects",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add new project",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"springboot12\",\r\n    \"employmentMode\":\"EMPLOYED\",\r\n    \"capacity\":\"FULL_TIME\",\r\n    \"durationInMonths\":\"3\",\r\n    \"startYear\":\"2022\",\r\n    \"role\":\"java\",\r\n    \"teamSize\":4,\r\n    \"profileId\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/projects",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update project",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"springboot13\",\r\n    \"employmentMode\":\"EMPLOYED\",\r\n    \"capacity\":\"FULL_TIME\",\r\n    \"durationInMonths\":\"3\",\r\n    \"startYear\":\"2022\",\r\n    \"role\":\"java\",\r\n    \"teamSize\":4,\r\n    \"profileId\":33\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/projects/50",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"projects",
+						"50"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add new reviewer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"hoquocthai204\",\r\n    \"email\":\"hoquocthai204@gmail.com\",\r\n    \"password\":\"01204899282\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/reviewers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"reviewers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"hoquocthai204@gmail.com\",\r\n    \"password\":\"01204899282\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob3F1b2N0aGFpMjA0QGdtYWlsLmNvbSIsImV4cCI6MTY1ODI3NzE3NSwiaWF0IjoxNjU4MjQ4Mzc1fQ.V4dw9UDQiMCQjo_mP5KoXK6rlzUMnGhF1cgtku8KQHKCkGKlJgt0bYY2hO4nDtSUJNM8uBM4BwjU9RzMKcZCTg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/profiles/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"profiles",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete project",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob3F1b2N0aGFpMjA0QGdtYWlsLmNvbSIsImV4cCI6MTY1ODI3NzE3NSwiaWF0IjoxNjU4MjQ4Mzc1fQ.V4dw9UDQiMCQjo_mP5KoXK6rlzUMnGhF1cgtku8KQHKCkGKlJgt0bYY2hO4nDtSUJNM8uBM4BwjU9RzMKcZCTg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/projects/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"projects",
+						"8"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
