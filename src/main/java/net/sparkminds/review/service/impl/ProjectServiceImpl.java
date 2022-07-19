@@ -14,35 +14,36 @@ import net.sparkminds.review.exception.ProjectNotFoundException;
 import net.sparkminds.review.repository.ProfileRepository;
 import net.sparkminds.review.repository.ProjectRepository;
 import net.sparkminds.review.service.ProjectService;
+import net.sparkminds.review.service.mapper.ProjectMapper;
 
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
-    
+
     private final ProfileRepository profileRepository;
+
+    private final ProjectMapper projectMapper;
 
     @Override
     public List<Project> getAllProject() {
-        return projectRepository.findAll();
+        return projectRepository.findAllByDeleteFalse();
     }
 
     @Override
     @Transactional
     public void addNewProject(ProjectRequestDto dto) {
-        Profile profile = profileRepository.findById(dto.getProfileId())
+        profileRepository.findById(dto.getProfileId())
                 .orElseThrow(() -> new ProfileNotFoundException("Profile is not found"));
-        projectRepository.save(Project.builder().name(dto.getName()).employmentMode(dto.getEmploymentMode())
-                .capacity(dto.getCapacity()).durationInMonths(dto.getDurationInMonths()).startYear(dto.getStartYear())
-                .role(dto.getRole()).teamSize(dto.getTeamSize()).linkRepo(dto.getLinkRepo()).linkLive(dto.getLinkLive())
-                .profile(profile).build());
+        projectRepository.save(projectMapper.convertToEntity(dto));
     }
 
     @Override
     @Transactional
     public void updateProject(Long id, ProjectRequestDto dto) {
-        Project project = projectRepository.findById(id).orElseThrow(()->new ProjectNotFoundException("Project is not found"));
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new ProjectNotFoundException("Project is not found"));
         Profile profile = profileRepository.findById(dto.getProfileId())
                 .orElseThrow(() -> new ProfileNotFoundException("Profile is not found"));
         project.setName(dto.getName());
@@ -58,8 +59,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new ProjectNotFoundException("Project is not found"));
+        project.setDelete(true);
     }
 
 }

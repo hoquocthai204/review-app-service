@@ -16,8 +16,6 @@ public interface ProfileService {
 
     void deleteProfile(Long id);
 
-    Object exportProfile();
-
     Profile findProfile(Long id);
 
 }

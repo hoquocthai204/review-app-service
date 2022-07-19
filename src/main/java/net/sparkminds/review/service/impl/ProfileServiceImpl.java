@@ -52,22 +52,18 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     public ProfileResponseDto saveProfile(ProfileRequestDto dto) {
-        Profile profile = profileRepository
-                .save(profileMapper.convertToEntity(dto));
+        Profile profile = profileRepository.save(profileMapper.convertToEntity(dto));
         Profile profileMod = profileRepository.findById(profile.getId()).get();
-        profileMod.getPastProjects().forEach(project->project.setProfile(profileMod));
+        profileMod.getPastProjects().forEach(project -> project.setProfile(profileMod));
         return profileMapper.convertToResponseDto(profile);
     }
 
     @Override
     @Transactional
     public void deleteProfile(Long id) {
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile is not found to delete"));
         profileRepository.deleteById(id);
-    }
-
-    @Override
-    public Object exportProfile() {
-        return null;
     }
 
     @Override
