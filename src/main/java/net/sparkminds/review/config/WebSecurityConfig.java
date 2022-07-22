@@ -1,8 +1,5 @@
 package net.sparkminds.review.config;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,27 +53,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/api/login", "/api/reviewers").permitAll().
+                .authorizeRequests().antMatchers("/api/authentication/login", "/api/reviewers").permitAll().
                 // all other requests need to be authenticated
                 anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        httpSecurity
-                .logout(logout -> logout.logoutUrl("/api/logout").addLogoutHandler((request, response, auth) -> {
-                    for (Cookie cookie : request.getCookies()) {
-                        String cookieName = cookie.getName();
-                        Cookie cookieToDelete = new Cookie(cookieName, null);
-                        cookieToDelete.setMaxAge(0);
-                        response.addCookie(cookieToDelete);
-                    }
-                    try {
-                        request.logout();
-                    } catch (ServletException e) {
-                        e.printStackTrace();
-                    }
-                }));
 
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

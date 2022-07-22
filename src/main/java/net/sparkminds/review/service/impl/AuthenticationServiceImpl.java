@@ -1,29 +1,30 @@
 package net.sparkminds.review.service.impl;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import net.sparkminds.review.dto.request.LoginRequestDto;
 import net.sparkminds.review.dto.response.LoginResponseDto;
-import net.sparkminds.review.service.LoginService;
+import net.sparkminds.review.service.AuthenticationService;
 import net.sparkminds.review.util.JwtTokenUtil;
 
 @Service
 @RequiredArgsConstructor
-public class LoginServiceImpl implements LoginService {
+public class AuthenticationServiceImpl implements AuthenticationService {
+
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsServiceImpl detailsServiceImpl;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     public LoginResponseDto login(LoginRequestDto dto) throws Exception {
@@ -45,10 +46,11 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public void logout(HttpServletRequest request) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, null, null);
-        }
+    public void logout(HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        token = token.split(" ")[1];
+        redisTemplate.opsForValue().set(token, token);
+        redisTemplate.expire(token, 8, TimeUnit.HOURS);
     }
+
 }

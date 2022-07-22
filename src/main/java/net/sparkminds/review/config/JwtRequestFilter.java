@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.RequiredArgsConstructor;
 import net.sparkminds.review.service.impl.UserDetailsServiceImpl;
 import net.sparkminds.review.util.JwtTokenUtil;
 
@@ -26,13 +27,13 @@ class gets executed. It checks if the request has a valid JWT token. If it has a
  */
 
 @Component
+@RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -73,6 +74,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // After setting the Authentication in the context, we specify
                 // that the current user is authenticated. So it passes the
                 // Spring Security Configurations successfully.
+                if (redisTemplate.opsForValue().get(jwtToken) != null) {
+                    SecurityContextHolder.getContext().setAuthentication(null);
+                    return;
+                }
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }

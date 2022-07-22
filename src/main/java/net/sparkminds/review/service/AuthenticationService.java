@@ -1,12 +1,12 @@
 package net.sparkminds.review.service;
 
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
 
 import net.sparkminds.review.dto.request.LoginRequestDto;
 import net.sparkminds.review.dto.response.LoginResponseDto;
 
-public interface LoginService {
+public interface AuthenticationService {
     LoginResponseDto login(LoginRequestDto dto) throws Exception;
 
-    void logout(HttpServletRequest request);
+    void logout(HttpHeaders headers);
 }

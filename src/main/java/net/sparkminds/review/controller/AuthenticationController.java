@@ -1,36 +1,37 @@
 package net.sparkminds.review.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import net.sparkminds.review.dto.request.LoginRequestDto;
 import net.sparkminds.review.dto.response.LoginResponseDto;
-import net.sparkminds.review.service.LoginService;
+import net.sparkminds.review.service.AuthenticationService;
 
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/api/authentication")
 @RequiredArgsConstructor
 @Validated
-public class LoginController {
+public class AuthenticationController {
 
-    private final LoginService loginService;
+    private final AuthenticationService authenticationService;
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto dto) throws Exception {
-        return ResponseEntity.ok(loginService.login(dto));
+        return ResponseEntity.ok(authenticationService.login(dto));
     }
-    @GetMapping
-    public ResponseEntity<?> logout(HttpServletRequest request){
-        loginService.logout(request);
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader HttpHeaders headers) {
+        authenticationService.logout(headers);
         return ResponseEntity.noContent().build();
     }
 }

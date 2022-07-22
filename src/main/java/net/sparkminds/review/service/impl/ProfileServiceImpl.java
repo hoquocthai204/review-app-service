@@ -61,7 +61,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     @Transactional
     public void deleteProfile(Long id) {
-        Profile profile = profileRepository.findById(id)
+        profileRepository.findById(id)
                 .orElseThrow(() -> new ProfileNotFoundException("Profile is not found to delete"));
         profileRepository.deleteById(id);
     }
