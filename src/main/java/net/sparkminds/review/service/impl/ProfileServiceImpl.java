@@ -2,6 +2,7 @@ package net.sparkminds.review.service.impl;
 
 import java.util.List;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public List<Profile> getAllProfile() {
@@ -33,6 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
         if (profileRepository.existsByEmailAddress(dto.getEmailAddress())) {
             profileRepository.deleteByEmailAddress(dto.getEmailAddress());
         }
+
         return saveProfile(dto);
     }
 

@@ -20,10 +20,9 @@ import net.sparkminds.review.service.mapper.ProjectMapper;
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
+
     private final ProjectRepository projectRepository;
-
     private final ProfileRepository profileRepository;
-
     private final ProjectMapper projectMapper;
 
     @Override
