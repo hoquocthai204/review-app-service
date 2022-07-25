@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import net.sparkminds.review.dto.request.LoginRequestDto;
 import net.sparkminds.review.dto.response.LoginResponseDto;
 import net.sparkminds.review.service.AuthenticationService;
+import net.sparkminds.review.service.SendLogService;
 import net.sparkminds.review.util.JwtTokenUtil;
 
 @Service
@@ -22,9 +23,10 @@ import net.sparkminds.review.util.JwtTokenUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsServiceImpl detailsServiceImpl;
     private final RedisTemplate<String, String> redisTemplate;
+    private final SendLogService sendLogService;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @Override
     public LoginResponseDto login(LoginRequestDto dto) throws Exception {
@@ -32,6 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticate(dto.getEmail(), dto.getPassword());
         final UserDetails userDetails = detailsServiceImpl.loadUserByUsername(dto.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
+        sendLogService.sendingMessage(dto.getEmail(), "Logged In");
         return new LoginResponseDto(token);
     }
 
@@ -51,6 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         token = token.split(" ")[1];
         redisTemplate.opsForValue().set(token, token);
         redisTemplate.expire(token, 8, TimeUnit.HOURS);
+        sendLogService.sendingMessage(jwtTokenUtil.getUsernameFromToken(token), "Log out");
     }
 
 }

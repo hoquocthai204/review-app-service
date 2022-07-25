@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,12 +44,13 @@ public class ProfileController {
     private final ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<List<Profile>> getAllProfile() {
-        return ResponseEntity.ok(profileService.getAllProfile());
+    public ResponseEntity<List<Profile>> getAllProfile(@RequestHeader HttpHeaders headers) {
+        
+        return ResponseEntity.ok(profileService.getAllProfile(headers));
     }
 
     @GetMapping("/export/pdf")
-    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
+    public void exportToPDF(HttpServletResponse response, @RequestHeader HttpHeaders headers) throws DocumentException, IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -56,7 +59,7 @@ public class ProfileController {
         String headerValue = "attachment; filename=profiles_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        List<Profile> listProfile = profileService.getAllProfile();
+        List<Profile> listProfile = profileService.getAllProfile(headers);
         List<Project> listProject = projectService.getAllProject();
 
         ProfilePDFExporter exporter = new ProfilePDFExporter(listProfile, listProject);

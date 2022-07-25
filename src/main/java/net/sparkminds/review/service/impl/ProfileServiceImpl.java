@@ -2,7 +2,7 @@ package net.sparkminds.review.service.impl;
 
 import java.util.List;
 
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +13,9 @@ import net.sparkminds.review.entity.Profile;
 import net.sparkminds.review.exception.ProfileNotFoundException;
 import net.sparkminds.review.repository.ProfileRepository;
 import net.sparkminds.review.service.ProfileService;
+import net.sparkminds.review.service.SendLogService;
 import net.sparkminds.review.service.mapper.ProfileMapper;
+import net.sparkminds.review.util.JwtTokenUtil;
 
 @Service
 @AllArgsConstructor
@@ -22,10 +24,13 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final SendLogService sendLogService;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @Override
-    public List<Profile> getAllProfile() {
+    public List<Profile> getAllProfile(HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        sendLogService.sendingMessage(jwtTokenUtil.getUsernameFromToken(token), "get all Profile");
         return profileRepository.findAll();
     }
 
@@ -35,7 +40,7 @@ public class ProfileServiceImpl implements ProfileService {
         if (profileRepository.existsByEmailAddress(dto.getEmailAddress())) {
             profileRepository.deleteByEmailAddress(dto.getEmailAddress());
         }
-
+        sendLogService.sendingMessage(dto.getEmailAddress(), "create new profile");
         return saveProfile(dto);
     }
 
@@ -52,6 +57,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setName(dto.getName());
         profile.setGithubUser(dto.getGithubUser());
         profile.setEmailAddress(dto.getEmailAddress());
+        sendLogService.sendingMessage(dto.getEmailAddress(), "just update profile");
     }
 
     public ProfileResponseDto saveProfile(ProfileRequestDto dto) {

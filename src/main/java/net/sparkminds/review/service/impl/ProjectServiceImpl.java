@@ -14,7 +14,9 @@ import net.sparkminds.review.exception.ProjectNotFoundException;
 import net.sparkminds.review.repository.ProfileRepository;
 import net.sparkminds.review.repository.ProjectRepository;
 import net.sparkminds.review.service.ProjectService;
+import net.sparkminds.review.service.SendLogService;
 import net.sparkminds.review.service.mapper.ProjectMapper;
+import net.sparkminds.review.util.JwtTokenUtil;
 
 @Service
 @AllArgsConstructor
@@ -24,6 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ProfileRepository profileRepository;
     private final ProjectMapper projectMapper;
+    private final SendLogService sendLogService;
 
     @Override
     public List<Project> getAllProject() {
@@ -36,6 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
         profileRepository.findById(dto.getProfileId())
                 .orElseThrow(() -> new ProfileNotFoundException("Profile is not found"));
         projectRepository.save(projectMapper.convertToEntity(dto));
+        sendLogService.sendingMessage(null, null);
     }
 
     @Override
