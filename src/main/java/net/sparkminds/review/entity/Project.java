@@ -23,7 +23,6 @@ import net.sparkminds.review.entity.enumeration.EmploymentMode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-
 public class Project extends AbstractAuditingEntity {
 
     private static final long serialVersionUID = 1L;
