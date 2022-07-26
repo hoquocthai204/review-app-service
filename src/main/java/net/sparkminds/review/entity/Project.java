@@ -12,24 +12,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import net.sparkminds.review.entity.enumeration.CapacityStatus;
 import net.sparkminds.review.entity.enumeration.EmploymentMode;
 
 @Entity
 @Table(name = "t_project")
 @Data
-@SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-
 public class Project extends AbstractAuditingEntity {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +59,9 @@ public class Project extends AbstractAuditingEntity {
 
     @Column(name = "link_live")
     private String linkLive;
+
+    @Column(name = "is_deleted")
+    private Boolean delete = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_profile_id")

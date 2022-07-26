@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<!-- Added the entity Project. -->
+	<changeSet id="20220716220000-1" author="thaihq">
+		<createTable tableName="t_project">
+			<column name="id" type="bigint" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="name" type="${nameType}" />
+			<column name="employment_mode" type="${employmentModeType}">
+				<constraints nullable="false" />
+			</column>
+			<column name="capacity" type="${capacityType}">
+				<constraints nullable="false" />
+			</column>
+			<column name="duration_in_months"
+				type="${durationInMonthsType}" />
+			<column name="start_year" type="${startYearType}" />
+			<column name="role" type="${roleType}" />
+			<column name="team_size" type="${teamSizeType}" />
+			<column name="link_repo" type="${linkRepoType}" />
+			<column name="link_live" type="${linkLiveType}" />
+			<column name="fk_profile_id" type="BIGINT" />
+			<column name="created_by" type="${createdByType}">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_date" type="timestamp" />
+			<column name="last_modified_by" type="${latestModifiedByType}" />
+			<column name="last_modified_date" type="timestamp" />
+		</createTable>
+	</changeSet>
+</databaseChangeLog>
