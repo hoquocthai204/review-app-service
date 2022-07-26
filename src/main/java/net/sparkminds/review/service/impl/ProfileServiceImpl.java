@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.sparkminds.review.dto.request.ProfileRequestDto;
 import net.sparkminds.review.dto.response.ProfileResponseDto;
 import net.sparkminds.review.entity.Profile;
@@ -18,7 +19,7 @@ import net.sparkminds.review.service.mapper.ProfileMapper;
 import net.sparkminds.review.util.JwtTokenUtil;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProfileServiceImpl implements ProfileService {
 
@@ -29,8 +30,9 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public List<Profile> getAllProfile(HttpHeaders headers) {
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        sendLogService.sendingMessage(jwtTokenUtil.getUsernameFromToken(token), "get all Profile");
+        String requestTokenHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        String jwtToken = requestTokenHeader.substring(7);
+        sendLogService.sendingMessage(jwtTokenUtil.getUsernameFromToken(jwtToken), "get all Profile");
         return profileRepository.findAll();
     }
 
