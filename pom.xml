@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -94,9 +95,6 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
-
-		<!-- <dependency> <groupId>org.liquibase</groupId> <artifactId>liquibase-core</artifactId> 
-			</dependency> -->
 	</dependencies>
 
 	<build>
@@ -105,11 +103,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<!-- <plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-maven-plugin</artifactId> 
-				<configuration> <propertyFile>src/main/resources/application.properties</propertyFile> 
-				</configuration> </plugin> -->
+
 		</plugins>
 	</build>
-
-
 </project>
